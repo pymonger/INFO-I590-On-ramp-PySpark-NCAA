@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta property="twitter:account_id" content="288500051" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:image" content="/wp-content/uploads/2016/02/hworkslogo_large.png">
+    <title>Spark Tutorial</title>
+    <link rel="profile" href="http://gmpg.org/xfn/11">
+    <link rel="pingback" href="http://hortonworks.com/xmlrpc.php" rel="nofollow">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="http://feeds.feedburner.com/hortonworks/feed">
+    <link rel="shortcut icon" href="http://hortonworks.com/wp-content/themes/hortonworks/images/icons/favicon.ico">
+    <link href='https://fonts.googleapis.com/css?family=Titillium+Web:200,300,400,600|Roboto:100,300,400,500' rel='stylesheet' type='text/css'>
+
+    <!-- Template is : single-sandbox-demo.php -->
+
+    
+<!-- This site is optimized with the Yoast SEO plugin v3.0.7 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name="description" content="In this Spark tutorial, we will introduce the basic concepts of Apache Spark and the first necessary steps to get started with Spark on Hortonworks Sandbox."/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="http://hortonworks.com/hadoop-tutorial/hands-on-tour-of-apache-spark-in-5-minutes/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Spark Tutorial" />
+<meta property="og:description" content="In this Spark tutorial, we will introduce the basic concepts of Apache Spark and the first necessary steps to get started with Spark on Hortonworks Sandbox." />
+<meta property="og:url" content="http://hortonworks.com/hadoop-tutorial/hands-on-tour-of-apache-spark-in-5-minutes/" />
+<meta property="og:site_name" content="Hortonworks" />
+<meta property="article:section" content="HDP" />
+<meta property="og:image" content="https://raw.githubusercontent.com/hortonworks/tutorials/hdp/assets/a-tour-of-spark-in-5-minutes/2-apache-spark-tour-in-5-minutes.png" />
+<meta property="og:image" content="https://raw.githubusercontent.com/hortonworks/tutorials/hdp/assets/a-tour-of-spark-in-5-minutes/3-apache-spark-tour-in-5-minutes.png" />
+<meta property="og:image" content="https://raw.githubusercontent.com/hortonworks/tutorials/hdp/assets/a-tour-of-spark-in-5-minutes/5-apache-spark-tour-in-5-minutes.png" />
+<meta property="og:image" content="https://raw.githubusercontent.com/hortonworks/tutorials/hdp/assets/a-tour-of-spark-in-5-minutes/6-apache-spark-tour-in-5-minutes.png" />
+<meta property="og:image" content="https://raw.githubusercontent.com/hortonworks/tutorials/hdp/assets/a-tour-of-spark-in-5-minutes/1-apache-spark-tour-in-5-minutes.png" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:description" content="In this Spark tutorial, we will introduce the basic concepts of Apache Spark and the first necessary steps to get started with Spark on Hortonworks Sandbox."/>
+<meta name="twitter:title" content="Spark Tutorial"/>
+<meta name="twitter:site" content="@hortonworks"/>
+<meta name="twitter:image" content="https://raw.githubusercontent.com/hortonworks/tutorials/hdp/assets/a-tour-of-spark-in-5-minutes/2-apache-spark-tour-in-5-minutes.png"/>
+<meta name="twitter:creator" content="@hortonworks"/>
+<!-- / Yoast SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Hortonworks &raquo; Hands-on Tour of Apache Spark in 5 Minutes Comments Feed" href="http://hortonworks.com/hadoop-tutorial/hands-on-tour-of-apache-spark-in-5-minutes/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/hortonworks.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.4.2"}};
+			!function(a,b,c){function d(a){var c,d=b.createElement("canvas"),e=d.getContext&&d.getContext("2d"),f=String.fromCharCode;return e&&e.fillText?(e.textBaseline="top",e.font="600 32px Arial","flag"===a?(e.fillText(f(55356,56806,55356,56826),0,0),d.toDataURL().length>3e3):"diversity"===a?(e.fillText(f(55356,57221),0,0),c=e.getImageData(16,16,1,1).data.toString(),e.fillText(f(55356,57221,55356,57343),0,0),c!==e.getImageData(16,16,1,1).data.toString()):("simple"===a?e.fillText(f(55357,56835),0,0):e.fillText(f(55356,57135),0,0),0!==e.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag"),unicode8:d("unicode8"),diversity:d("diversity")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag&&c.supports.unicode8&&c.supports.diversity||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='bbp-default-css'  href='http://hortonworks.com/wp-content/themes/hortonworks/css/bbpress.css?ver=2.5.8-5815' type='text/css' media='screen' />
+<link rel='stylesheet' id='hwx-base-css'  href='http://hortonworks.com/wp-content/themes/hortonworks/css/base.css?ver=1456862605' type='text/css' media='all' />
+<link rel='stylesheet' id='roboto slab-css'  href='//fonts.googleapis.com/css?family=Roboto+Slab%3A400%2C300&#038;ver=400300' type='text/css' media='all' />
+<link rel='stylesheet' id='permanent marker-css'  href='//fonts.googleapis.com/css?family=Permanent+Marker&#038;ver=400' type='text/css' media='all' />
+<link rel='stylesheet' id='cabin-css'  href='//fonts.googleapis.com/css?family=Cabin%3A400%2C700&#038;ver=400700' type='text/css' media='all' />
+<link rel='stylesheet' id='open sans-css'  href='//fonts.googleapis.com/css?family=Open+Sans%3A400%2C300&#038;ver=400301' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css'  href='http://hortonworks.com/wp-content/plugins/jetpack/css/jetpack.css?ver=3.9.1' type='text/css' media='all' />
+<script type='text/javascript' src='http://hortonworks.com/wp-includes/js/jquery/jquery.js?ver=1.11.3'></script>
+<script type='text/javascript' src='http://hortonworks.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+<link rel='https://api.w.org/' href='http://hortonworks.com/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://hortonworks.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://hortonworks.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='shortlink' href='http://hortonworks.com/?p=72277' />
+<link rel="alternate" type="application/json+oembed" href="http://hortonworks.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fhortonworks.com%2Fhadoop-tutorial%2Fhands-on-tour-of-apache-spark-in-5-minutes%2F" />
+<link rel="alternate" type="text/xml+oembed" href="http://hortonworks.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fhortonworks.com%2Fhadoop-tutorial%2Fhands-on-tour-of-apache-spark-in-5-minutes%2F&#038;format=xml" />
+<link rel="icon" href="http://hortonworks.com/wp-content/uploads/2016/03/cropped-favicon521x512-32x32.png" sizes="32x32" />
+<link rel="icon" href="http://hortonworks.com/wp-content/uploads/2016/03/cropped-favicon521x512-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon-precomposed" href="http://hortonworks.com/wp-content/uploads/2016/03/cropped-favicon521x512-180x180.png" />
+<meta name="msapplication-TileImage" content="http://hortonworks.com/wp-content/uploads/2016/03/cropped-favicon521x512-270x270.png" />
+
+    <!-- Marketo Analytics -->
+<script type="text/javascript">
+(function() {
+	var didInit = false;
+	function initMunchkin() {
+	if(didInit === false) {
+		didInit = true;
+		Munchkin.init('549-QAL-086');
+	}
+	}
+	var s = document.createElement('script');
+	s.type = 'text/javascript';
+	s.async = true;
+	s.src = '//munchkin.marketo.net/munchkin-beta.js';
+	s.onreadystatechange = function() {
+	if (this.readyState == 'complete' || this.readyState == 'loaded') {
+		initMunchkin();
+	}
+	};
+	s.onload = initMunchkin;
+	document.getElementsByTagName('head')[0].appendChild(s);
+})();
+</script>
+</head>
+<body class="single single-sandbox-demo postid-72277 slug_hands-on-tour-of-apache-spark-in-5-minutes view-mode-normal no_optin">
+
+<script>
+    window.lsfDataLayer = window.lsfDataLayer || [];
+</script>
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PC8GGM" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','lsfDataLayer','GTM-PC8GGM');</script>
+
+<!--[if lt IE 9]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div id="canvas">
+
+    
+        <nav class="navigation relative" id="mobile-nav">
+            <!-- This is the mobile nav -->
+            <div class="search">
+                <form action="http://hortonworks.com/search-results" method="GET">
+                    <input type="text" name="search" placeholder="Search">
+                    <button type="submit"><span class="icon-search"></span></button>
+                </form>
+            </div>
+            <div class="menu-header-navigation-2015-container"><ul id="menu-header-navigation-2015" class="menu"><li id="menu-item-79159" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-79159"><a href="http://hortonworks.com/why-hortonworks/">Why Hortonworks?</a>
+<ul class="sub-menu">
+	<li id="menu-item-79168" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79168"><a href="http://hortonworks.com/open-enterprise-hadoop/">Open Enterprise Hadoop</a></li>
+	<li id="menu-item-79169" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79169"><a href="http://hortonworks.com/innovation/">Open Leadership</a></li>
+	<li id="menu-item-79171" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79171"><a href="http://hortonworks.com/partners/">Partners</a></li>
+	<li id="menu-item-79172" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79172"><a href="http://hortonworks.com/customers/">Customers</a></li>
+	<li id="menu-item-79173" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79173"><a href="http://hortonworks.com/about-us/quick-facts/">Quick Facts</a></li>
+	<li id="menu-item-79178" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79178"><a href="http://hortonworks.com/hadoop/">What is Hadoop?</a></li>
+</ul>
+</li>
+<li id="menu-item-79160" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-79160"><a href="http://hortonworks.com/products/">Products</a>
+<ul class="sub-menu">
+	<li id="menu-item-79181" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79181"><a href="http://hortonworks.com/products/hortonworks-sandbox/">Hortonworks Sandbox</a></li>
+	<li id="menu-item-79183" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79183"><a href="http://hortonworks.com/products/dataflow/">Hortonworks Dataflow</a></li>
+	<li id="menu-item-79186" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79186"><a href="http://hortonworks.com/hdp/whats-new/">Hortonworks Data Platform</a></li>
+</ul>
+</li>
+<li id="menu-item-79161" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79161"><a href="http://hortonworks.com/customers/">Customers</a></li>
+<li id="menu-item-79162" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-79162"><a href="http://hortonworks.com/solutions/">Solutions</a>
+<ul class="sub-menu">
+	<li id="menu-item-79189" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79189"><a href="http://hortonworks.com/solutions/data-architecture-optimization/">Data Architecture Optimization</a></li>
+	<li id="menu-item-79191" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79191"><a href="http://hortonworks.com/solutions/advanced-analytic-apps/">Advanced Analytic Applications</a></li>
+	<li id="menu-item-79194" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-79194"><a href="http://hortonworks.com/industry/">Industry Overview</a>
+	<ul class="sub-menu">
+		<li id="menu-item-79196" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79196"><a href="http://hortonworks.com/industry/advertising/">Advertising</a></li>
+		<li id="menu-item-79197" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79197"><a href="http://hortonworks.com/industry/financial/">Financial Services</a></li>
+		<li id="menu-item-79200" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79200"><a href="http://hortonworks.com/industry/healthcare/">Healthcare</a></li>
+		<li id="menu-item-79202" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79202"><a href="http://hortonworks.com/industry/insurance/">Insurance</a></li>
+		<li id="menu-item-79203" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79203"><a href="http://hortonworks.com/industry/manufacturing/">Manufacturing</a></li>
+		<li id="menu-item-79204" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79204"><a href="http://hortonworks.com/industry/oil-and-gas/">Oil and Gas</a></li>
+		<li id="menu-item-79205" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79205"><a href="http://hortonworks.com/industry/government/">Government</a></li>
+		<li id="menu-item-79206" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79206"><a href="http://hortonworks.com/industry/retail/">Retail</a></li>
+		<li id="menu-item-79207" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79207"><a href="http://hortonworks.com/industry/telecom/">Telecommunications</a></li>
+	</ul>
+</li>
+</ul>
+</li>
+<li id="menu-item-79165" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-79165"><a href="http://hortonworks.com/training/">Training</a>
+<ul class="sub-menu">
+	<li id="menu-item-79218" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-79218"><a href="https://ilearning.seertechsolutions.com/lmt/clmscatalogsummary.prmain?in_sessionid=&#038;in_location=%25&#038;in_orderBy=PA&#038;in_portid=57&#038;in_courseType=%25&#038;in_ddCategory=%25&#038;in_language_logged_out=en-us&#038;in_region=hw&#038;in_displayForm=Y">Classroom Training</a></li>
+	<li id="menu-item-79219" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-79219"><a href="http://hortonworks.com/training/class/hortonworks-university-self-paced-learning-library/">Self-Paced Learning Library</a></li>
+	<li id="menu-item-79222" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-79222"><a href="http://hortonworks.com/training/class/hortonworks-university-academic-program/">Academic Training</a></li>
+	<li id="menu-item-79223" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-79223"><a href="http://hortonworks.com/training/certification/">Hadoop Certification</a></li>
+</ul>
+</li>
+<li id="menu-item-79166" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-79166"><a href="http://hortonworks.com/services/">Services</a>
+<ul class="sub-menu">
+	<li id="menu-item-83017" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-83017"><a href="http://hortonworks.com/professional-services/">Professional Services</a></li>
+	<li id="menu-item-79224" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-79224"><a href="http://hortonworks.com/support/">HDP Support Subscription</a></li>
+	<li id="menu-item-79225" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-79225"><a href="http://hortonworks.com/services/jumpstart">Jumpstart Service</a></li>
+	<li id="menu-item-79226" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-79226"><a href="http://hortonworks.com/training/">Training &#038; Certification</a></li>
+</ul>
+</li>
+<li id="menu-item-79167" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-79167"><a href="http://hortonworks.com/developer/">Developers</a>
+<ul class="sub-menu">
+	<li id="menu-item-79227" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-79227"><a href="https://hortonworks-gallery.github.io/index.html">Hortonworks Gallery</a></li>
+	<li id="menu-item-79212" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79212"><a href="http://hortonworks.com/tutorials/">Tutorials</a></li>
+	<li id="menu-item-79228" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-79228"><a href="http://hortonworks.com/community/forums/">Forums</a></li>
+</ul>
+</li>
+</ul></div>        </nav>
+
+        <div id="navbar">
+            <section class="ps" id="blacknav">
+                <div>
+                    <div class="blacklinks">
+                        <div class="community">
+                            <a href="/blog/">Blog</a> &nbsp;|&nbsp;
+                            <a href="/partners/">Partners</a> &nbsp;|&nbsp;
+                            <a href="/contact-sales/" class="contact-us-launch fancybox.iframe" style="color:#e17000;">Contact</a> &nbsp;|&nbsp;
+                        </div>
+                        <div class="tools">
+                            <ul class="tools-list">
+                                <li class="hide-small"><a class="open" data-tool="search" href="#" title="search"><span class="icon-search"></span></a>  &nbsp;|&nbsp; </li>
+                                <li><a class="open" data-tool="language" href="#" title="change language"><span class="icon-language"></span></a>  &nbsp;|&nbsp; </li>
+                                <li class="hide-small"><a class="open" data-tool="profile" href="#" title="login">Login</a>
+                                    <ul class="sub-menu">
+                                        <li>
+                                                                                            <a href="/weve-moved" class="menu-item-link">Forums Login</a>
+                                                                                    </li>
+                                        <li><a href="#" data-login="support" class="menu-item-link">Support Login</a></li>
+                                        <li><a href="#" data-login="training" class="menu-item-link">Training Login</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="ps" id="header">
+                <div>
+                    <!-- <div class="blacklinks"><a href="/about/">About</a> &nbsp;|&nbsp; <a href="/blog/">Blog</a></div> -->
+
+                    <!-- #logo -->
+                    <div id="logo"><a title="Hortonworks Logo" href="http://hortonworks.com/"><img src="http://hortonworks.com/wp-content/uploads/2016/02/HWX-RGB-full-no-tagline-reverse.png" alt="Hortonworks Logo"></a></div>
+
+                    <!-- Nav -->
+                    <nav id="main" class="navigation">
+                        <a href="#menu" class="menu-link"><span class="icon-menu"></span></a>
+                        <div class="menu-header-navigation-container">
+
+                            <aside id="header-tools" class="pop-over">
+                                <form action="http://hortonworks.com/search-results" method="GET" class="tool-form search-form" name="Search">
+                                    <fieldset>
+                                        <input type="text" name="search" placeholder="Search" />
+                                        <button type="submit"><span class="icon-search"></span></button>
+                                    </fieldset>
+                                </form>
+
+                                <div class="language-form tool-form">
+                                    <div class="statement">
+                                        <span class="icon-language"></span>
+                                        <div id="smt-lang-selector"></div>
+                                    </div>
+                                </div>
+
+                                
+                                    <form class="login-form tool-form forums_login" name="login" action="http://hortonworks.com/wp-login.php?wpe-login=hortonworks" method="post">
+                                        <span class="icon-profile"><span class="login_to">forums</span></span>
+                                        <fieldset>
+                                            <input name="log" type="text" placeholder="Username" />
+                                            <input name="pwd" type="password" placeholder="Password" />
+                                            <input type="hidden" name="redirect_to" value="http://hortonworks.com/hadoop-tutorial/hands-on-tour-of-apache-spark-in-5-minutes/" />
+                                            <input type="hidden" name="is_bbpress" value="" />
+                                            <button>Sign In</button>
+                                            <a href="http://hortonworks.com/wp-login.php?action=lostpassword" class="forgot">Forgot?</a>
+                                        </fieldset>
+                                    </form>
+
+                                    <form class="login-fail tool-form forums_login">
+                                        <span class="icon-profile"></span> Login failed, please try again.
+                                    </form>
+
+                                
+                                <form class="login-form tool-form support_login" name="login-support" action="https://na9.salesforce.com/secur/login_portal.jsp" method="post" target="_blank">
+                                    <span class="icon-profile"><span class="login_to">support</span></span>
+                                    <fieldset>
+                                        <input type="hidden" name="startURL" value="">
+                                        <input type="hidden" name="loginURL" value="">
+                                        <input type="hidden" name="useSecure" value="true">
+                                        <input type="hidden" name="jse" id="jse" value="0">
+                                        <input type="hidden" name="orgId" value="00DE0000000J52j">
+                                        <input type="hidden" name="portalId" value="060E0000000PbFt">
+                                        <input type="hidden" name="loginType" value="2">
+                                        <input type="hidden" name="action" value="loginAction">
+                                        <input name="un" type="text" placeholder="Username" />
+                                        <input name="pw" type="password" placeholder="Password" />
+                                        <button>Sign In</button>
+                                        <a href="https://na9.salesforce.com/secur/forgotpasswordp.jsp?orgId=00DE0000000J52j&amp;portalId=060E0000000PbFt&amp;retURL=%2Fsecur%2Flogin_portal.jsp" target="_blank" class="forgot">Forgot?</a>
+                                    </fieldset>
+                                </form>
+
+                                <form class="login-form tool-form training_login" name="login-training" action="https://ilearning.seertechsolutions.com/lmt/lmtlogin.processlogin" method="post" target="_blank">
+                                    <span class="icon-profile"><span class="login_to">training</span></span>
+                                    <fieldset>
+                                        <input type="hidden" name="in_portid" value="57">
+                                        <input type="hidden" name="in_busportid" value="">
+                                        <input type="hidden" name="in_busid" value="">
+                                        <input type="hidden" name="in_debug" value="">
+                                        <input type="hidden" name="in_redirecturl" value="lmtLogin.prMenu?in_sessionid=<XLR8_SESSIONID>">
+                                        <input type="hidden" name="in_edition" value="">
+                                        <input type="hidden" name="in_sessionid" value="">
+                                        <input name="in_userlogin" type="text" placeholder="Username" />
+                                        <input name="in_password" type="password" placeholder="Password" />
+                                        <button>Sign In</button>
+                                        <a href="https://ilearning.seertechsolutions.com/lmt/clmaforgotpassword.prmain?in_portid=57" target="_blank" class="forgot">Forgot?</a>
+                                    </fieldset>
+                                </form>
+
+                                <a href="#" class="close"><span class="icon-close"></span></a>
+                            </aside>
+
+                            <ul id="fat-nav" class="menu">
+                                <li id="menu-item-1" class="menu-item menu-item-has-children"><a href="/why-hortonworks/" class="menu-item-link">Why Hortonworks</a>
+                                    <ul class="sub-menu tall col-1">
+                                        <li><a href="/future-of-data/" class="menu-item-link">Future of Data</a></li>
+                                        <li><a href="/connected-data-platforms/" class="menu-item-link">Connected Data Platforms</a></li>
+                                        <li><a href="/innovation/" class="menu-item-link">Open Leadership</a></li>
+                                        <li><a href="/partners/" class="menu-item-link">Partners</a></li>
+                                        <li><a href="/customers/" class="menu-item-link">Customers</a></li>
+                                        <li><a href="/about-us/quick-facts/" class="menu-item-link">Quick Facts</a></li>
+                                        <li><a href="/hadoop/" class="menu-item-link">What is Apache Hadoop?</a></li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-2" class="menu-item menu-item-has-children"><a href="/hdp/" class="menu-item-link">Products</a>
+                                    <ul class="sub-menu col-2">
+                                        <li><a href="/sandbox/" class="menu-item-link" style="padding-left: 0;">Hortonworks Sandbox</a></li>
+                                        <li><a href="/hdf/" class="menu-item-link" style="padding-left: 0;">Hortonworks DataFlow</a></li>
+                                        <li><a href="/hdp/downloads/#hdf" class="menu-item-link">Download & Install</a></li>
+                                        <li><a href="/hdp/whats-new/" class="menu-item-link" style="padding-left: 0;">Hortonworks Data Platform</a></li>
+                                        <li><a href="/hdp/downloads/" class="menu-item-link">Download & Install</a></li>
+                                        <li><a href="/hdp/docs/" class="menu-item-link">Documentation</a></li>
+                                        <li><a href="/hdp/addons/" class="menu-item-link">Add-ons</a></li>
+                                        <li><a href="/partners/ecosystem/" class="menu-item-link">Ecosystem</a></li>
+                                        <li><a href="/products/spark-at-scale/" class="menu-item-link">Spark at Scale</a></li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-4" class="menu-item menu-item-has-children"><a href="/customers/" class="menu-item-link">Customers</a>
+                                    <ul class="sub-menu col-4">
+
+                                    </ul>
+                                </li>
+                                <li id="menu-item-5" class="menu-item menu-item-has-children"><a href="/solutions/" class="menu-item-link">Solutions</a>
+                                    <ul class="sub-menu col-5">
+                                        <li><a href="/solutions/data-architecture-optimization/" class="menu-item-link" style="padding-left: 0;">Data Architecture Optimization</a></li>
+                                        <li><a href="/hadoop/data-science" class="menu-item-link" style="padding-left: 0;">Data Science</a></li>
+                                        <li><a href="/solutions/advanced-analytic-apps/" class="menu-item-link" style="padding-left: 0;">Advanced Analytics</a></li>
+                                        <li><a href="/industry/" class="menu-item-link" style="padding-left: 0;">Industry Overview</a></li>
+                                        <li><a href="/industry/advertising/" class="menu-item-link">Advertising</a></li>
+                                        <li><a href="/industry/financial/" class="menu-item-link">Financial Services</a></li>
+                                        <li><a href="/industry/healthcare/" class="menu-item-link">Healthcare</a></li>
+                                        <li><a href="/industry/insurance/" class="menu-item-link">Insurance </a></li>
+                                        <li><a href="/industry/manufacturing/" class="menu-item-link">Manufacturing</a></li>
+                                        <li><a href="/industry/oil-and-gas/" class="menu-item-link">Oil &amp; Gas</a></li>
+                                        <li><a href="/industry/pharmaceutical/" class="menu-item-link">Pharmaceuticals</a></li>
+                                        <li><a href="/industry/government/" class="menu-item-link">Public Sector</a></li>
+                                        <li><a href="/industry/retail/" class="menu-item-link">Retail</a></li>
+                                        <li><a href="/industry/telecom/" class="menu-item-link">Telecommunications</a></li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-6" class="menu-item menu-item-has-children"><a href="/training/" class="menu-item-link">Training</a>
+                                    <ul class="sub-menu col-6">
+                                        <li><a href="https://ilearning.seertechsolutions.com/lmt/clmscatalogsummary.prmain?in_sessionid=&in_location=%25&in_orderBy=PA&in_portid=57&in_courseType=%25&in_ddCategory=%25&in_language_logged_out=en-us&in_region=hw&in_displayForm=Y" class="menu-item-link" target="_blank">Classroom Training</a></li>
+                                        <li><a href="/training/class/hortonworks-university-self-paced-learning-library/" class="menu-item-link">Self-Paced Learning Library</a></li>
+                                        <li><a href="/training/class/hortonworks-university-academic-program/" class="menu-item-link">Academic Training</a></li>
+                                        <li><a href="/training/certification/" class="menu-item-link">Apache Hadoop Certification</a> </li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-7" class="menu-item menu-item-has-children"><a href="/support/" class="menu-item-link">Services</a>
+                                    <ul class="sub-menu col-7">
+                                        <li><a href="/professional-services/" class="menu-item-link">Professional Services</a></li>
+                                        <li><a href="/support/" class="menu-item-link">HDP Support Subscription</a></li>
+                                        <li><a href="/hdf-support/" class="menu-item-link">HDF Support Subscription</a></li>
+                                        <li><a href="/services/jumpstart" class="menu-item-link">Jumpstart</a></li>
+                                        <li><a href="/training/" class="menu-item-link">Training & Certification</a></li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-8" class="menu-item menu-item-has-children"><a href="/developer/" class="menu-item-link">Developers</a>
+
+                                    <ul class="sub-menu col-8">
+                                        <li><a href="/community" class="menu-item-link">Hortonworks Community Connection</a></li>
+                                        <li><a href="https://community.hortonworks.com/gallery/index.html" class="menu-item-link">Code Hub</a></li>
+                                        <li><a href="/tutorials/" class="menu-item-link">Tutorials</a></li>
+                                        <li><a href="https://community.hortonworks.com/answers/index.html" class="menu-item-link">Forums</a></li>
+                                        <li><a href="https://community.hortonworks.com/kb/index.html" class="menu-item-link">Knowledge Base</a></li>
+                                    </ul>
+
+                                </li>
+                                <li id="menu-item-9" class="menu-item menu-item-has-children"><a href="/get-started/" class="menu-item-link">Get Started</a>
+                                    <ul class="sub-menu col-9">
+                                        <li><a href="/contact-sales/" class="menu-item-link">Request a Call</a></li>
+                                        <li><a href="/sandbox/" class="menu-item-link">Download Sandbox</a></li>
+                                        <li><a href="/big-data-scorecard/" class="menu-item-link">Big Data Scorecard</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav><!-- End of #main -->
+
+                </div>
+            </section>
+        </div>
+
+    
+    <div class="mainbody">
+
+<style>
+    .related_tutorials li                       { margin-bottom:10px; }
+    .related_tutorials a                        { text-decoration:none; }
+    .related_tutorials .partner_name a          { color:#aaa; text-decoration:none; text-transform:uppercase; font-size:85%; }
+    .related_tutorials .partner_name a:hover    { text-decoration:underline; }
+    .related_tutorials .active                  { font-weight:bold;}
+
+    .newsletter_signup                          { margin-top:30px; background-color:#fee8d4; padding:10px 15px;  }
+    .newsletter_signup .prompt                  { font-weight:bold; font-size:80%; margin-bottom:5px; padding-left:2px;}
+    .newsletter_signup form>div                 { float:left; margin-right:10px;}
+    .newsletter_signup label[for="Email"]       { display:none; }
+    .newsletter_signup span                     { display: none; }
+    .newsletter_signup input[type="email"]      { width:350px; margin-right: 10px; }
+    .newsletter_signup .success_message         { font-weight:bold; color:#e17000; padding-left:2px; }
+
+    .tut_series_title                           { text-transform:uppercase; color:#aaa; font-size:85%; }
+    .tut_series_title+h3                        { margin-top:0px;}
+
+    .sidenav                                    { border-right:1px dashed #ddd;}
+    .sidenav .sectionnav                        { border-right:0px; }
+
+    ol .sectionnav ul                           { padding-left:15px; }
+
+	.aside                                      { border-left:0px; }
+
+    .share                                      { width: 145px; text-align: left; }
+    h3#introduction                             { margin-top: 10px; }
+
+    #dlsandbox_button                           { padding: 5px; }
+
+    #hadoop_banner                              { margin: 35px 0; }
+</style>
+
+
+
+<section class="ps titlebar">
+	<div>
+		<div class="breadcrumb"><a href="/tutorials/">Tutorials</a> &raquo; Hands-on Tour of Apache Spark in 5 Minutes</div>
+				<h1  class="wordy">Hands-on Tour of Apache Spark in 5 Minutes</h1>
+
+		<div class="subtitle">with Python</div>
+
+	</div>
+</section>
+<div class="lowerbody clearfix">
+
+	<section class="ps">
+		<div class="grid">
+			<div class="col-1-4 sidenav">
+
+				<div class="aside">
+					<div id="dlsandbox_button" align="center">
+						<a target="_blank" href="http://hortonworks.com/products/hortonworks-sandbox/#install" class="btn loud alt">Download Sandbox</a>
+					</div>
+					<div class="related_tutorials">
+						<div class='tut_series_title'>Tutorial Series</div><h3>Apache Spark on HDP</h3><ol class='related_tutorials'><li class="active"><span>Hands-on Tour of Apache Spark in 5 Minutes</span></li><li><span><a href="http://hortonworks.com/hadoop-tutorial/a-lap-around-apache-spark/">A Lap Around Apache Spark</a></span></li><li><span><a href="http://hortonworks.com/hadoop-tutorial/interacting-with-data-on-hdp-using-scala-and-apache-spark/">Interacting with Data on HDP using Apache Zeppelin and Apache Spark</a></span></li><li><span><a href="http://hortonworks.com/hadoop-tutorial/using-hive-with-orc-from-apache-spark/">Using Hive with ORC from Apache Spark</a></span></li><li><span><a href="http://hortonworks.com/hadoop-tutorial/using-ipython-notebook-with-apache-spark/">Using IPython Notebook with Apache Spark</a></span></li></ol>					</div>
+					<div class="paid">
+						<h3>Self Paced Learning Library</h3>
+						<p>On demand learning any time, any where, on any digital device</p>
+						<a href="https://ilearning.seertechsolutions.com/lmt/clmscart.prAddToCart?in_portid=57&in_language_identifier=en-us&in_region=hw&in_classroomGroupId=44433081&in_from_module=CLMSCART.PRMAIN" title="OnDemand Class signup" class="btn loud">Sign up now</a>
+					</div>
+
+                    <div id="hadoop_banner">
+                        <a href="http://hadoopsummit.org/dublin/register/?utm_campaign=hadoopsummit-dublin&utm_medium=banner&utm_source=hortonworks.com"><img src="http://hortonworks.com/wp-content/uploads/2016/01/sideHadoopSummit.jpg"></a>
+                    </div>
+				</div>
+
+				&nbsp;
+
+			</div>
+			<div class="col-3-4 maincontent">
+				<div class="panels" style="padding:0 7%;">
+
+					<!--
+					<div class="promo" id="sandbox-promo">
+						<h3>Try this tutorial with :</h3>
+						<div class="sandbox_logo">
+							<a href="/sandbox/"><img alt="Hortonworks Sandbox" src="http://hortonworks.com/wp-content/uploads/unversioned/hwx_assets/sandbox_logo_transparent.png" width="220px"/></a>
+						</div>
+						<p>These tutorials are designed to work with Sandbox, a simple and easy to get started with Hadoop. Sandbox offers a full HDP environment that runs in a virtual machine.</p>
+						<div><a class="full clear btn" href="/sandbox#install">Get Sandbox</a></div>
+					</div>
+					-->
+
+                    <div class="share-container" align="right">
+                        <div class="share">
+                            Share on :
+                            <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                                <a class="addthis_button_google_plusone_share"></a>
+                                <a class="addthis_button_linkedin"></a>
+                                <a class="addthis_button_twitter"></a>
+                                <a class="addthis_button_facebook"></a>
+                                                            </div>
+                        </div>
+                    </div>
+
+											<div class='panel' id='section1'>
+							<div class='maincontent'>
+								<p>If you have any errors in completing this tutorial. Please ask questions or notify us on <a href="http://community.hortonworks.com">Hortonworks Community Connection</a>!</p>
+<div id="tutorial-content">
+<h3 id="introduction">Introduction</h3>
+<p>Apache Spark is a fast, in-memory data processing engine with elegant and expressive development APIs in Scala, Java, Python, and R that allow data workers to efficiently execute machine learning algorithms that require fast iterative access to datasets (see <a href="http://spark.apache.org/docs/latest/api.html">Spark API Documentation</a> for more info). Spark on <a href="http://hortonworks.com/hadoop/YARN" title="Apache Hadoop YARN">Apache Hadoop YARN</a> enables deep integration with Hadoop and other YARN enabled workloads in the enterprise.</p>
+<p>In this tutorial, we will introduce the basic concepts of Apache Spark and the first few necessary steps to get started with Spark using an Apache Zeppelin Notebook on a Hortonworks Data Platform (HDP) Sandbox.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>This tutorial is a part of series of hands-on tutorials to get you started with HDP using Hortonworks sandbox. Please ensure you complete the prerequisites before proceeding with this tutorial.</p>
+<ul>
+<li>Downloaded and Installed latest <a href="http://hortonworks.com/products/hortonworks-sandbox/#install">Hortonworks Sandbox</a></li>
+<li><a href="http://hortonworks.com/hadoop-tutorial/learning-the-ropes-of-the-hortonworks-sandbox/">Learning the Ropes of the Hortonworks Sandbox</a></li>
+</ul>
+<h3 id="concepts">Concepts</h3>
+<p>At the core of Spark is the notion of a <strong>Resilient Distributed Dataset</strong> (RDD), which is an immutable collection of objects that is partitioned and distributed across multiple physical nodes of a YARN cluster and that can be operated in parallel.</p>
+<p>Typically, RDDs are instantiated by loading data from a shared filesystem, HDFS, HBase, or any data source offering a Hadoop InputFormat on a YARN cluster.</p>
+<p>Once an RDD is instantiated, you can apply a <a href="https://spark.apache.org/docs/latest/programming-guide.html#rdd-operations">series of operations</a>. All operations fall into one of two types: <a href="https://spark.apache.org/docs/latest/programming-guide.html#transformations">transformations</a> or <a href="https://spark.apache.org/docs/latest/programming-guide.html#actions">actions</a>. <strong>Transformation</strong> operations, as the name suggests, create new datasets from an existing RDD and build out the processing Directed Acyclic Graph (DAG) that can then be applied on the partitioned dataset across the YARN cluster. An <strong>Action</strong> operation, on the other hand, executes DAG and returns a value.</p>
+<p>Let&#8217;s try it out.</p>
+<h3 id="a-hands-on-example">A Hands-On Example</h3>
+<p>First, let&#8217;s launch <strong>Zeppelin</strong> from your browser.</p>
+<p>Go to <code>http://&lt;host IP&gt;:9995</code>.</p>
+<p>For example, the default local <strong>VirtualBox</strong> address is <a href="http://127.0.0.1:9995">http://127.0.0.1:9995</a> and the default local <strong>VmWare</strong> address is <a href="http://172.16.148.128:9995">http://172.16.148.128:9995</a>.</p>
+<p><strong>Note:</strong> In local mode your <code>host IP</code> should be <code>127.0.0.1</code> for VirtualBox and <code>172.16.148.128</code> for VmWare, however if you are running your Sandbox in the cloud, review <a href="http://hortonworks.com/hadoop-tutorial/learning-the-ropes-of-the-hortonworks-sandbox/">Learning the Ropes</a> to learn how to determine your <code>host IP</code> address.</p>
+<p>Next, select <strong>Create new note</strong> from <strong>Notebook</strong> dropdown menu:</p>
+<p><img src="https://raw.githubusercontent.com/hortonworks/tutorials/hdp/assets/a-tour-of-spark-in-5-minutes/2-apache-spark-tour-in-5-minutes.png" alt="" /></p>
+<p>Give your notebook a name. I named my notebook <em>Apache Spark in 5 Minutes</em></p>
+<p><img src="https://raw.githubusercontent.com/hortonworks/tutorials/hdp/assets/a-tour-of-spark-in-5-minutes/3-apache-spark-tour-in-5-minutes.png" alt="" /></p>
+<p>Zeppelin comes with several interpreters pre-configured on Sandbox. In this tutorial we will use a shell interpreter <code>%sh</code> and a pyspark interpreter <code>%pyspark</code>.</p>
+<p>Let&#8217;s start with a shell interpreter <code>%sh</code> and bring in some Hortonworks related Wikipedia data.</p>
+<p>Type the following in your Zeppelin Notebook and hit <strong>shift + enter</strong> to execute the code:</p>
+<div class="highlighter-rouge">
+<pre class="highlight"><code>%sh
+wget http://en.wikipedia.org/wiki/Hortonworks
+</code></pre>
+</div>
+<p>You should see an output similar to this</p>
+<p><img src="https://raw.githubusercontent.com/hortonworks/tutorials/hdp/assets/a-tour-of-spark-in-5-minutes/5-apache-spark-tour-in-5-minutes.png" alt="" /></p>
+<p>Next, let&#8217;s copy the data over to HDFS. Type and execute the following:</p>
+<div class="highlighter-rouge">
+<pre class="highlight"><code>%sh
+hadoop fs -put ~/Hortonworks /tmp
+</code></pre>
+</div>
+<p>Now we are ready to run a simple Python program with Spark. This time we will use the python interpreter <code>%pyspark</code>. Copy and execute this code:</p>
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="o">%</span><span class="n">pyspark</span>
+<span class="n">myLines</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s">'hdfs://sandbox.hortonworks.com/tmp/Hortonworks'</span><span class="p">)</span>
+<span class="n">myLinesFiltered</span> <span class="o">=</span> <span class="n">myLines</span><span class="o">.</span><span class="nb">filter</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="n">count</span> <span class="o">=</span> <span class="n">myLinesFiltered</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">count</span>
+</code></pre>
+</div>
+<p>When you execute the above you should get only a number as an output. I got <code>311</code> but it may vary depending on the Wikipedia entry.</p>
+<p><img src="https://raw.githubusercontent.com/hortonworks/tutorials/hdp/assets/a-tour-of-spark-in-5-minutes/6-apache-spark-tour-in-5-minutes.png" alt="" /></p>
+<p>Let&#8217;s go over what&#8217;s actually going on. After the python interpreter <code>%pyspark</code> is initialized we instantiate an RDD using a Spark Context <code>sc</code> with a <code>Hortonworks</code> file on HDFS:</p>
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="n">myLines</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s">'hdfs://sandbox.hortonworks.com/tmp/Hortonworks'</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>After we instantiate the RDD, we apply a transformation operation on the RDD. In this case, a simple transformation operation using a Python lambda expression to filter out all the empty lines:</p>
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="n">myLinesFiltered</span> <span class="o">=</span> <span class="n">myLines</span><span class="o">.</span><span class="nb">filter</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+</code></pre>
+</div>
+<p>At this point, the transformation operation above did not touch the data in any way. It has only modified the processing graph.</p>
+<p>We finally execute an action operation using the aggregate function <code>count()</code>, which then executes all the transformation operations:</p>
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="n">count</span> <span class="o">=</span> <span class="n">myLinesFiltered</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</code></pre>
+</div>
+<p>Lastly, with <code>print count</code> we display the final count value, which returns <code>311</code>.</p>
+<p>That&#8217;s it! Your complete notebook should look like this after you run your code in all paragraphs:</p>
+<p><img src="https://raw.githubusercontent.com/hortonworks/tutorials/hdp/assets/a-tour-of-spark-in-5-minutes/1-apache-spark-tour-in-5-minutes.png" alt="" /></p>
+<p>We hope that this little example wets your appetite for more ambitious data science projects on the Hortonworks Data Platform (HDP) Sandbox.</p>
+<p>If you&#8217;re feeling adventurous checkout our other great  <a href="http://hortonworks.com/hadoop/spark/#tutorials">Apache Spark &amp; Hadoop</a> tutorials.</p>
+</div>
+<hr>
+<h2>Tutorial Q&#038;A and Reporting Issues</h2>
+<p> If you need help or have questions with this tutorial, please first check HCC for existing Answers to questions on this tutorial using the Find Answers button.  If you don&#8217;t find your answer you can post a new HCC question for this tutorial using the Ask Questions button. </p>
+<table>
+<tr>
+<td colspan="2">
+<a class="btn text-center" href="https://community.hortonworks.com/topics/tutorial-360.html" role="button">Find Answers</a>
+</td>
+<td colspan="2">
+<a class="btn text-center" href="https://community.hortonworks.com/questions/ask.html?space=81&amp;topics=tutorial-360&#038;topics=hdp-2.4.0" role="button">Ask Questions</a>
+</td>
+</tr>
+</table>
+<p> Tutorial Name: <strong>A Hands-on Tour of Apache Spark</strong><br />
+HCC Tutorial Tag:<strong> tutorial-360</strong> and <strong>hdp-2.4.0</strong></p>
+<p>All Hortonworks, partner and community tutorials are posted in the Hortonworks github and can be contributed via the Hortonworks Tutorial Collaboration Guide.  If you are certain there is an issue or bug with the tutorial, please create an issue on the repository and we will do our best to resolve it!</p>
+							</div>
+						</div>
+						
+					<div class="newsletter_signup">
+						<div class="prompt">Get notified of new tutorials : </div>
+						<form id="mktoForm_523" class="marketo-form-embed uid_56de64c8e6460" method="post"><span>Stay up to date!</span><label for="Email">Email:</label><input class="customMktoField validate[required,custom[email]]" type="email" name="Email" id="Email" maxlength="255" value="" placeholder="Leave your email for updates" /><input class="customMktoField " type="hidden" name="rFSITECompany" id="rFSITECompany" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEAddr1" id="rFSITEAddr1" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEAddr2" id="rFSITEAddr2" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITECity" id="rFSITECity" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEState" id="rFSITEState" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITECountry" id="rFSITECountry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEZip" id="rFSITEZip" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEPhone" id="rFSITEPhone" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITETradeName" id="rFSITETradeName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEURL" id="rFSITEURL" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITELocationType" id="rFSITELocationType" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITESubCode" id="rFSITESubCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITESICCode" id="rFSITESICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITESicName" id="rFSITESicName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITENAICCode" id="rFSITENAICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITENAICSName" id="rFSITENAICSName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEEmplyeesTotal" id="rFSITEEmplyeesTotal" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFSITEEmplyeesHere" id="rFSITEEmplyeesHere" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFSITEAnnualRev" id="rFSITEAnnualRev" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFgeoIPareacode" id="rFgeoIPareacode" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFgeoIPcity" id="rFgeoIPcity" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFgeoIPstate" id="rFgeoIPstate" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFgeoIPcountry" id="rFgeoIPcountry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFConfidenceLevel" id="rFConfidenceLevel" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQCompany" id="rFHQCompany" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQAddr1" id="rFHQAddr1" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQAddr2" id="rFHQAddr2" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQCity" id="rFHQCity" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQState" id="rFHQState" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQCountry" id="rFHQCountry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQZip" id="rFHQZip" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQPhone" id="rFHQPhone" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQTradeName" id="rFHQTradeName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQURL" id="rFHQURL" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQLocationType" id="rFHQLocationType" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQSubCode" id="rFHQSubCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQSICCode" id="rFHQSICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQSicName" id="rFHQSicName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQNAICCode" id="rFHQNAICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQNAICSName" id="rFHQNAICSName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQEmplyeesTotal" id="rFHQEmplyeesTotal" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFHQEmplyeesHere" id="rFHQEmplyeesHere" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFHQAnnualRev" id="rFHQAnnualRev" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFDHQCompany" id="rFDHQCompany" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQAddr1" id="rFDHQAddr1" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQAddr2" id="rFDHQAddr2" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQCity" id="rFDHQCity" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQState" id="rFDHQState" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQCountry" id="rFDHQCountry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQZip" id="rFDHQZip" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQPhone" id="rFDHQPhone" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQTradeName" id="rFDHQTradeName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQURL" id="rFDHQURL" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQLocationType" id="rFDHQLocationType" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQSubCode" id="rFDHQSubCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQSicName" id="rFDHQSicName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQSICCode" id="rFDHQSICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQNAICCode" id="rFDHQNAICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQNAICSName" id="rFDHQNAICSName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQEmplyeesTotal" id="rFDHQEmplyeesTotal" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFDHQEmplyeesHere" id="rFDHQEmplyeesHere" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFDHQAnnualRev" id="rFDHQAnnualRev" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="InferredCompany" id="InferredCompany" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="InferredCountry" id="InferredCountry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="Inferred_Industry__c" id="Inferred_Industry__c" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="inferredState" id="inferredState" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="RF_GHQ_Addr1" id="RF_GHQ_Addr1" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQAddr2" id="rFGHQAddr2" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQAnnualRev" id="rFGHQAnnualRev" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQCity" id="rFGHQCity" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQCompany" id="rFGHQCompany" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQCountry" id="rFGHQCountry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQEmplyeesHere" id="rFGHQEmplyeesHere" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFGHQEmplyeesTotal" id="rFGHQEmplyeesTotal" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFGHQNAICCode" id="rFGHQNAICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQNAICSName" id="rFGHQNAICSName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQPhone" id="rFGHQPhone" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQSICCode" id="rFGHQSICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQSicName" id="rFGHQSicName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQState" id="rFGHQState" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQSubCode" id="rFGHQSubCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQTradeName" id="rFGHQTradeName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQURL" id="rFGHQURL" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQZip" id="rFGHQZip" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQIndustry" id="rFDHQIndustry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQIndustry" id="rFHQIndustry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEIndustry" id="rFSITEIndustry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="optIn" id="optIn" maxlength="" value="True" /><input type="hidden" class="customMktoField hidden" id="formVid" name="formVid" value="523" /><input type="hidden" class="customMktoField hidden" id="munchkinId" name="munchkinId" value="549-QAL-086" /><input type="hidden" class="customMktoField hidden" id="formid" name="formid" value="523" /><input type="hidden" class="unique_identifier customMktoField hidden" value="56de64c8e6460" /><div id="mkto_submit"><input type="submit" value="Subscribe"></div><input type="hidden" class="customMktoField hidden" id="leadSource" name="leadSource" value="http://hortonworks.com/hadoop-tutorial/hands-on-tour-of-apache-spark-in-5-minutes/" /></form><div class="success_message" style="display: none;"><p>Thank You</p></div>					</div>
+
+
+
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+
+</div><!-- end mainbody -->
+
+
+
+<section class="ps" id="newsletter_signup">
+	<div class="newsletter_signup_wrapper">
+		<div class="container">
+			<form id="mktoForm_523" class="marketo-form-embed uid_56de64c9256e1" method="post"><span>Stay up to date!</span><label for="Email">Email:</label><input class="customMktoField validate[required,custom[email]]" type="email" name="Email" id="Email" maxlength="255" value="" placeholder="Leave your email for updates" /><input class="customMktoField " type="hidden" name="rFSITECompany" id="rFSITECompany" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEAddr1" id="rFSITEAddr1" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEAddr2" id="rFSITEAddr2" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITECity" id="rFSITECity" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEState" id="rFSITEState" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITECountry" id="rFSITECountry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEZip" id="rFSITEZip" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEPhone" id="rFSITEPhone" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITETradeName" id="rFSITETradeName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEURL" id="rFSITEURL" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITELocationType" id="rFSITELocationType" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITESubCode" id="rFSITESubCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITESICCode" id="rFSITESICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITESicName" id="rFSITESicName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITENAICCode" id="rFSITENAICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITENAICSName" id="rFSITENAICSName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEEmplyeesTotal" id="rFSITEEmplyeesTotal" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFSITEEmplyeesHere" id="rFSITEEmplyeesHere" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFSITEAnnualRev" id="rFSITEAnnualRev" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFgeoIPareacode" id="rFgeoIPareacode" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFgeoIPcity" id="rFgeoIPcity" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFgeoIPstate" id="rFgeoIPstate" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFgeoIPcountry" id="rFgeoIPcountry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFConfidenceLevel" id="rFConfidenceLevel" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQCompany" id="rFHQCompany" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQAddr1" id="rFHQAddr1" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQAddr2" id="rFHQAddr2" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQCity" id="rFHQCity" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQState" id="rFHQState" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQCountry" id="rFHQCountry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQZip" id="rFHQZip" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQPhone" id="rFHQPhone" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQTradeName" id="rFHQTradeName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQURL" id="rFHQURL" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQLocationType" id="rFHQLocationType" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQSubCode" id="rFHQSubCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQSICCode" id="rFHQSICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQSicName" id="rFHQSicName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQNAICCode" id="rFHQNAICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQNAICSName" id="rFHQNAICSName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQEmplyeesTotal" id="rFHQEmplyeesTotal" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFHQEmplyeesHere" id="rFHQEmplyeesHere" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFHQAnnualRev" id="rFHQAnnualRev" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFDHQCompany" id="rFDHQCompany" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQAddr1" id="rFDHQAddr1" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQAddr2" id="rFDHQAddr2" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQCity" id="rFDHQCity" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQState" id="rFDHQState" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQCountry" id="rFDHQCountry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQZip" id="rFDHQZip" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQPhone" id="rFDHQPhone" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQTradeName" id="rFDHQTradeName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQURL" id="rFDHQURL" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQLocationType" id="rFDHQLocationType" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQSubCode" id="rFDHQSubCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQSicName" id="rFDHQSicName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQSICCode" id="rFDHQSICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQNAICCode" id="rFDHQNAICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQNAICSName" id="rFDHQNAICSName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQEmplyeesTotal" id="rFDHQEmplyeesTotal" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFDHQEmplyeesHere" id="rFDHQEmplyeesHere" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFDHQAnnualRev" id="rFDHQAnnualRev" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="InferredCompany" id="InferredCompany" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="InferredCountry" id="InferredCountry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="Inferred_Industry__c" id="Inferred_Industry__c" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="inferredState" id="inferredState" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="RF_GHQ_Addr1" id="RF_GHQ_Addr1" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQAddr2" id="rFGHQAddr2" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQAnnualRev" id="rFGHQAnnualRev" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQCity" id="rFGHQCity" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQCompany" id="rFGHQCompany" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQCountry" id="rFGHQCountry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQEmplyeesHere" id="rFGHQEmplyeesHere" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFGHQEmplyeesTotal" id="rFGHQEmplyeesTotal" maxlength="" value="" /><input class="customMktoField " type="hidden" name="rFGHQNAICCode" id="rFGHQNAICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQNAICSName" id="rFGHQNAICSName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQPhone" id="rFGHQPhone" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQSICCode" id="rFGHQSICCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQSicName" id="rFGHQSicName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQState" id="rFGHQState" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQSubCode" id="rFGHQSubCode" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQTradeName" id="rFGHQTradeName" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQURL" id="rFGHQURL" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFGHQZip" id="rFGHQZip" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFDHQIndustry" id="rFDHQIndustry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFHQIndustry" id="rFHQIndustry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="rFSITEIndustry" id="rFSITEIndustry" maxlength="255" value="" /><input class="customMktoField " type="hidden" name="optIn" id="optIn" maxlength="" value="True" /><input type="hidden" class="customMktoField hidden" id="formVid" name="formVid" value="523" /><input type="hidden" class="customMktoField hidden" id="munchkinId" name="munchkinId" value="549-QAL-086" /><input type="hidden" class="customMktoField hidden" id="formid" name="formid" value="523" /><input type="hidden" class="unique_identifier customMktoField hidden" value="56de64c9256e1" /><div id="mkto_submit"><input type="submit" value="Subscribe"></div><input type="hidden" class="customMktoField hidden" id="leadSource" name="leadSource" value="http://hortonworks.com/hadoop-tutorial/hands-on-tour-of-apache-spark-in-5-minutes/" /></form><div class="success_message" style="display: none;"><p>Thank you for subscribing!</p></div>		</div>
+		<div class="dev-container">
+			<span>Developer updates!</span>
+			<form id="mktoForm_795" class="marketo-form-embed uid_56de64c926785" method="post"><div class="marketo_field FirstName"><label for="FirstName">First Name:</label><input class="customMktoField " type="text" name="FirstName" id="FirstName" maxlength="255" value="" placeholder="First Name" /></div><div class="marketo_field LastName"><label for="LastName">Last Name:</label><input class="customMktoField " type="text" name="LastName" id="LastName" maxlength="255" value="" placeholder="Last Name" /></div><div class="marketo_field Email"><label for="Email">Email:</label><input class="customMktoField validate[required,custom[email]]" type="email" name="Email" id="Email" maxlength="255" value="" placeholder="Leave your email for updates" /></div><div class="marketo_field rFSITECompany"><input class="customMktoField " type="hidden" name="rFSITECompany" id="rFSITECompany" maxlength="255" value="" /></div><div class="marketo_field rFSITEAddr1"><input class="customMktoField " type="hidden" name="rFSITEAddr1" id="rFSITEAddr1" maxlength="255" value="" /></div><div class="marketo_field rFSITEAddr2"><input class="customMktoField " type="hidden" name="rFSITEAddr2" id="rFSITEAddr2" maxlength="255" value="" /></div><div class="marketo_field rFSITECity"><input class="customMktoField " type="hidden" name="rFSITECity" id="rFSITECity" maxlength="255" value="" /></div><div class="marketo_field rFSITEState"><input class="customMktoField " type="hidden" name="rFSITEState" id="rFSITEState" maxlength="255" value="" /></div><div class="marketo_field rFSITECountry"><input class="customMktoField " type="hidden" name="rFSITECountry" id="rFSITECountry" maxlength="255" value="" /></div><div class="marketo_field rFSITEZip"><input class="customMktoField " type="hidden" name="rFSITEZip" id="rFSITEZip" maxlength="255" value="" /></div><div class="marketo_field rFSITEPhone"><input class="customMktoField " type="hidden" name="rFSITEPhone" id="rFSITEPhone" maxlength="255" value="" /></div><div class="marketo_field rFSITETradeName"><input class="customMktoField " type="hidden" name="rFSITETradeName" id="rFSITETradeName" maxlength="255" value="" /></div><div class="marketo_field rFSITEURL"><input class="customMktoField " type="hidden" name="rFSITEURL" id="rFSITEURL" maxlength="255" value="" /></div><div class="marketo_field rFSITELocationType"><input class="customMktoField " type="hidden" name="rFSITELocationType" id="rFSITELocationType" maxlength="255" value="" /></div><div class="marketo_field rFSITESubCode"><input class="customMktoField " type="hidden" name="rFSITESubCode" id="rFSITESubCode" maxlength="255" value="" /></div><div class="marketo_field rFSITESICCode"><input class="customMktoField " type="hidden" name="rFSITESICCode" id="rFSITESICCode" maxlength="255" value="" /></div><div class="marketo_field rFSITESicName"><input class="customMktoField " type="hidden" name="rFSITESicName" id="rFSITESicName" maxlength="255" value="" /></div><div class="marketo_field rFSITENAICCode"><input class="customMktoField " type="hidden" name="rFSITENAICCode" id="rFSITENAICCode" maxlength="255" value="" /></div><div class="marketo_field rFSITENAICSName"><input class="customMktoField " type="hidden" name="rFSITENAICSName" id="rFSITENAICSName" maxlength="255" value="" /></div><div class="marketo_field rFSITEEmplyeesTotal"><input class="customMktoField " type="hidden" name="rFSITEEmplyeesTotal" id="rFSITEEmplyeesTotal" maxlength="" value="" /></div><div class="marketo_field rFSITEEmplyeesHere"><input class="customMktoField " type="hidden" name="rFSITEEmplyeesHere" id="rFSITEEmplyeesHere" maxlength="" value="" /></div><div class="marketo_field rFSITEAnnualRev"><input class="customMktoField " type="hidden" name="rFSITEAnnualRev" id="rFSITEAnnualRev" maxlength="" value="" /></div><div class="marketo_field rFgeoIPareacode"><input class="customMktoField " type="hidden" name="rFgeoIPareacode" id="rFgeoIPareacode" maxlength="" value="" /></div><div class="marketo_field rFgeoIPcity"><input class="customMktoField " type="hidden" name="rFgeoIPcity" id="rFgeoIPcity" maxlength="255" value="" /></div><div class="marketo_field rFgeoIPstate"><input class="customMktoField " type="hidden" name="rFgeoIPstate" id="rFgeoIPstate" maxlength="255" value="" /></div><div class="marketo_field rFgeoIPcountry"><input class="customMktoField " type="hidden" name="rFgeoIPcountry" id="rFgeoIPcountry" maxlength="255" value="" /></div><div class="marketo_field rFConfidenceLevel"><input class="customMktoField " type="hidden" name="rFConfidenceLevel" id="rFConfidenceLevel" maxlength="255" value="" /></div><div class="marketo_field rFHQCompany"><input class="customMktoField " type="hidden" name="rFHQCompany" id="rFHQCompany" maxlength="255" value="" /></div><div class="marketo_field rFHQAddr1"><input class="customMktoField " type="hidden" name="rFHQAddr1" id="rFHQAddr1" maxlength="255" value="" /></div><div class="marketo_field rFHQAddr2"><input class="customMktoField " type="hidden" name="rFHQAddr2" id="rFHQAddr2" maxlength="255" value="" /></div><div class="marketo_field rFHQCity"><input class="customMktoField " type="hidden" name="rFHQCity" id="rFHQCity" maxlength="255" value="" /></div><div class="marketo_field rFHQState"><input class="customMktoField " type="hidden" name="rFHQState" id="rFHQState" maxlength="255" value="" /></div><div class="marketo_field rFHQCountry"><input class="customMktoField " type="hidden" name="rFHQCountry" id="rFHQCountry" maxlength="255" value="" /></div><div class="marketo_field rFHQZip"><input class="customMktoField " type="hidden" name="rFHQZip" id="rFHQZip" maxlength="255" value="" /></div><div class="marketo_field rFHQPhone"><input class="customMktoField " type="hidden" name="rFHQPhone" id="rFHQPhone" maxlength="255" value="" /></div><div class="marketo_field rFHQTradeName"><input class="customMktoField " type="hidden" name="rFHQTradeName" id="rFHQTradeName" maxlength="255" value="" /></div><div class="marketo_field rFHQURL"><input class="customMktoField " type="hidden" name="rFHQURL" id="rFHQURL" maxlength="255" value="" /></div><div class="marketo_field rFHQLocationType"><input class="customMktoField " type="hidden" name="rFHQLocationType" id="rFHQLocationType" maxlength="255" value="" /></div><div class="marketo_field rFHQSubCode"><input class="customMktoField " type="hidden" name="rFHQSubCode" id="rFHQSubCode" maxlength="255" value="" /></div><div class="marketo_field rFHQSICCode"><input class="customMktoField " type="hidden" name="rFHQSICCode" id="rFHQSICCode" maxlength="255" value="" /></div><div class="marketo_field rFHQSicName"><input class="customMktoField " type="hidden" name="rFHQSicName" id="rFHQSicName" maxlength="255" value="" /></div><div class="marketo_field rFHQNAICCode"><input class="customMktoField " type="hidden" name="rFHQNAICCode" id="rFHQNAICCode" maxlength="255" value="" /></div><div class="marketo_field rFHQNAICSName"><input class="customMktoField " type="hidden" name="rFHQNAICSName" id="rFHQNAICSName" maxlength="255" value="" /></div><div class="marketo_field rFHQEmplyeesTotal"><input class="customMktoField " type="hidden" name="rFHQEmplyeesTotal" id="rFHQEmplyeesTotal" maxlength="" value="" /></div><div class="marketo_field rFHQEmplyeesHere"><input class="customMktoField " type="hidden" name="rFHQEmplyeesHere" id="rFHQEmplyeesHere" maxlength="" value="" /></div><div class="marketo_field rFHQAnnualRev"><input class="customMktoField " type="hidden" name="rFHQAnnualRev" id="rFHQAnnualRev" maxlength="" value="" /></div><div class="marketo_field rFDHQCompany"><input class="customMktoField " type="hidden" name="rFDHQCompany" id="rFDHQCompany" maxlength="255" value="" /></div><div class="marketo_field rFDHQAddr1"><input class="customMktoField " type="hidden" name="rFDHQAddr1" id="rFDHQAddr1" maxlength="255" value="" /></div><div class="marketo_field rFDHQAddr2"><input class="customMktoField " type="hidden" name="rFDHQAddr2" id="rFDHQAddr2" maxlength="255" value="" /></div><div class="marketo_field rFDHQCity"><input class="customMktoField " type="hidden" name="rFDHQCity" id="rFDHQCity" maxlength="255" value="" /></div><div class="marketo_field rFDHQState"><input class="customMktoField " type="hidden" name="rFDHQState" id="rFDHQState" maxlength="255" value="" /></div><div class="marketo_field rFDHQCountry"><input class="customMktoField " type="hidden" name="rFDHQCountry" id="rFDHQCountry" maxlength="255" value="" /></div><div class="marketo_field rFDHQZip"><input class="customMktoField " type="hidden" name="rFDHQZip" id="rFDHQZip" maxlength="255" value="" /></div><div class="marketo_field rFDHQPhone"><input class="customMktoField " type="hidden" name="rFDHQPhone" id="rFDHQPhone" maxlength="255" value="" /></div><div class="marketo_field rFDHQTradeName"><input class="customMktoField " type="hidden" name="rFDHQTradeName" id="rFDHQTradeName" maxlength="255" value="" /></div><div class="marketo_field rFDHQURL"><input class="customMktoField " type="hidden" name="rFDHQURL" id="rFDHQURL" maxlength="255" value="" /></div><div class="marketo_field rFDHQLocationType"><input class="customMktoField " type="hidden" name="rFDHQLocationType" id="rFDHQLocationType" maxlength="255" value="" /></div><div class="marketo_field rFDHQSubCode"><input class="customMktoField " type="hidden" name="rFDHQSubCode" id="rFDHQSubCode" maxlength="255" value="" /></div><div class="marketo_field rFDHQSicName"><input class="customMktoField " type="hidden" name="rFDHQSicName" id="rFDHQSicName" maxlength="255" value="" /></div><div class="marketo_field rFDHQSICCode"><input class="customMktoField " type="hidden" name="rFDHQSICCode" id="rFDHQSICCode" maxlength="255" value="" /></div><div class="marketo_field rFDHQNAICCode"><input class="customMktoField " type="hidden" name="rFDHQNAICCode" id="rFDHQNAICCode" maxlength="255" value="" /></div><div class="marketo_field rFDHQNAICSName"><input class="customMktoField " type="hidden" name="rFDHQNAICSName" id="rFDHQNAICSName" maxlength="255" value="" /></div><div class="marketo_field rFDHQEmplyeesTotal"><input class="customMktoField " type="hidden" name="rFDHQEmplyeesTotal" id="rFDHQEmplyeesTotal" maxlength="" value="" /></div><div class="marketo_field rFDHQEmplyeesHere"><input class="customMktoField " type="hidden" name="rFDHQEmplyeesHere" id="rFDHQEmplyeesHere" maxlength="" value="" /></div><div class="marketo_field rFDHQAnnualRev"><input class="customMktoField " type="hidden" name="rFDHQAnnualRev" id="rFDHQAnnualRev" maxlength="255" value="" /></div><div class="marketo_field InferredCompany"><input class="customMktoField " type="hidden" name="InferredCompany" id="InferredCompany" maxlength="255" value="" /></div><div class="marketo_field InferredCountry"><input class="customMktoField " type="hidden" name="InferredCountry" id="InferredCountry" maxlength="255" value="" /></div><div class="marketo_field Inferred_Industry__c"><input class="customMktoField " type="hidden" name="Inferred_Industry__c" id="Inferred_Industry__c" maxlength="255" value="" /></div><div class="marketo_field inferredState"><input class="customMktoField " type="hidden" name="inferredState" id="inferredState" maxlength="255" value="" /></div><div class="marketo_field RF_GHQ_Addr1"><input class="customMktoField " type="hidden" name="RF_GHQ_Addr1" id="RF_GHQ_Addr1" maxlength="255" value="" /></div><div class="marketo_field rFGHQAddr2"><input class="customMktoField " type="hidden" name="rFGHQAddr2" id="rFGHQAddr2" maxlength="255" value="" /></div><div class="marketo_field rFGHQAnnualRev"><input class="customMktoField " type="hidden" name="rFGHQAnnualRev" id="rFGHQAnnualRev" maxlength="255" value="" /></div><div class="marketo_field rFGHQCity"><input class="customMktoField " type="hidden" name="rFGHQCity" id="rFGHQCity" maxlength="255" value="" /></div><div class="marketo_field rFGHQCompany"><input class="customMktoField " type="hidden" name="rFGHQCompany" id="rFGHQCompany" maxlength="255" value="" /></div><div class="marketo_field rFGHQCountry"><input class="customMktoField " type="hidden" name="rFGHQCountry" id="rFGHQCountry" maxlength="255" value="" /></div><div class="marketo_field rFGHQEmplyeesHere"><input class="customMktoField " type="hidden" name="rFGHQEmplyeesHere" id="rFGHQEmplyeesHere" maxlength="" value="" /></div><div class="marketo_field rFGHQEmplyeesTotal"><input class="customMktoField " type="hidden" name="rFGHQEmplyeesTotal" id="rFGHQEmplyeesTotal" maxlength="" value="" /></div><div class="marketo_field rFGHQNAICCode"><input class="customMktoField " type="hidden" name="rFGHQNAICCode" id="rFGHQNAICCode" maxlength="255" value="" /></div><div class="marketo_field rFGHQNAICSName"><input class="customMktoField " type="hidden" name="rFGHQNAICSName" id="rFGHQNAICSName" maxlength="255" value="" /></div><div class="marketo_field rFGHQPhone"><input class="customMktoField " type="hidden" name="rFGHQPhone" id="rFGHQPhone" maxlength="255" value="" /></div><div class="marketo_field rFGHQSICCode"><input class="customMktoField " type="hidden" name="rFGHQSICCode" id="rFGHQSICCode" maxlength="255" value="" /></div><div class="marketo_field rFGHQSicName"><input class="customMktoField " type="hidden" name="rFGHQSicName" id="rFGHQSicName" maxlength="255" value="" /></div><div class="marketo_field rFGHQState"><input class="customMktoField " type="hidden" name="rFGHQState" id="rFGHQState" maxlength="255" value="" /></div><div class="marketo_field rFGHQSubCode"><input class="customMktoField " type="hidden" name="rFGHQSubCode" id="rFGHQSubCode" maxlength="255" value="" /></div><div class="marketo_field rFGHQTradeName"><input class="customMktoField " type="hidden" name="rFGHQTradeName" id="rFGHQTradeName" maxlength="255" value="" /></div><div class="marketo_field rFGHQURL"><input class="customMktoField " type="hidden" name="rFGHQURL" id="rFGHQURL" maxlength="255" value="" /></div><div class="marketo_field rFGHQZip"><input class="customMktoField " type="hidden" name="rFGHQZip" id="rFGHQZip" maxlength="255" value="" /></div><div class="marketo_field rFDHQIndustry"><input class="customMktoField " type="hidden" name="rFDHQIndustry" id="rFDHQIndustry" maxlength="255" value="" /></div><div class="marketo_field rFHQIndustry"><input class="customMktoField " type="hidden" name="rFHQIndustry" id="rFHQIndustry" maxlength="255" value="" /></div><div class="marketo_field rFSITEIndustry"><input class="customMktoField " type="hidden" name="rFSITEIndustry" id="rFSITEIndustry" maxlength="255" value="" /></div><div class="marketo_field optIn"><input class="customMktoField " type="hidden" name="optIn" id="optIn" maxlength="" value="True" /></div><input type="hidden" class="customMktoField hidden" id="formVid" name="formVid" value="795" /><input type="hidden" class="customMktoField hidden" id="munchkinId" name="munchkinId" value="549-QAL-086" /><input type="hidden" class="customMktoField hidden" id="formid" name="formid" value="795" /><input type="hidden" class="unique_identifier customMktoField hidden" value="56de64c926785" /><div id="mkto_submit"><input type="submit" value="Subscribe"></div><input type="hidden" class="customMktoField hidden" id="leadSource" name="leadSource" value="http://hortonworks.com/hadoop-tutorial/hands-on-tour-of-apache-spark-in-5-minutes/" /></form><div class="success_message" style="display: none;"><p>Thank you for subscribing!</p></div>		</div>
+	</div>
+</section>
+
+<section class="ps" id="fat_footer">
+	<div>
+		<ul class="menu">
+			<li><b>About Us</b>
+				<ul class="sub-menu">
+					<li><a href="http://investors.hortonworks.com">Investor Relations</a></li>
+				    <li><a href="/about-us/quick-facts">Quick Facts</a></li>
+					<li><a href="/about-us/management-team/">Management Team</a></li>
+					<li><a href="/about-us/board-of-directors/">Board of Directors</a></li>
+					<li><a href="/about-us/founders/">Founders</a></li>
+					<li><a href="/careers/">Careers</a></li>
+					<li><a href="http://interns.hortonworks.com/" target="_blank">Internships</a></li>
+				</ul>
+			</li>
+			<li><b>Press</b>
+				<ul class="sub-menu">
+					<li><a href="/press-releases/">Press Releases</a></li>
+					<li><a href="/in-the-press/">In the Press</a></li>
+				</ul>
+			</li>
+			<li><b>Partners</b>
+				<ul class="sub-menu">
+					<li><a href="/partners/hadoop-consultants/">Systems Integrators</a></li>
+					<li><a href="/partners/ecosystem/">Technology Partners</a></li>
+					<li><a href="/partners/strategic-resell-partners/">Resellers</a></li>
+					<li><a href="/partners/certified-technology-program/">Certification</a></li>
+					<li><a href="/partners/become-a-partner/">Become a Partner</a></li>
+				</ul>
+			</li>
+			<li><b>Connect</b>
+				<ul class="sub-menu">
+					<li><a href="/blog/">Blog</a></li>
+					<li><a href="/webinars/">Webinars</a></li>
+					<li><a href="/events/">Events</a></li>
+				</ul>
+			</li>
+			<li><b>Contact</b>
+				<ul class="sub-menu">
+					<li><a href="/contact/">Contact</a></li>
+				</ul>
+								<div class="tel">+1 408 675-0983 <br>
+					<span style="font-size:70%; font-weight:normal; color:rgba(255, 255, 255, 0.4)">+1 855 8-HORTON</span><br/>
+					<span style="font-size:70%; font-weight:normal; color:rgba(255, 255, 255, 0.4)">Intl: +44 (0) 20 3826 1405 </span>
+				</div>
+								<ul class="social-icons-list">
+					<li><a href="http://facebook.com/hortonworks/" target="_blank"><img src="/wp-content/themes/hortonworks/images/icons/social/facebook-footer.gif" alt="Hortonworks Facebook"></a></li>
+					<li><a href="http://twitter.com/#!/hortonworks" target="_blank"><img src="/wp-content/themes/hortonworks/images/icons/social/twitter-footer.gif" alt="Hortonworks Twitter"></a></li>
+					<li><a href="http://www.linkedin.com/company/hortonworks" target="_blank"><img src="/wp-content/themes/hortonworks/images/icons/social/linkedin-footer.gif" alt="Hortonworks LinkedIn"></a></li>
+				</ul>
+			</li>
+		</ul>
+
+		<div class="sock">
+			<div class="logo"><a title="Hortonworks - Open Enterprise Hadoop." href="/">Hortonworks - Develops, Distributes and Supports Open Enterprise Hadoop.</a></div>
+			<p class="copy">© 2011-2016 Hortonworks Inc. All Rights Reserved.<br>
+				Hadoop, Falcon, Atlas, Sqoop, Flume, Kafka, Pig, Hive, HBase, Accumulo, Storm, Solr, Spark, Ranger, Knox, Ambari, ZooKeeper, Oozie and the Hadoop elephant logo are trademarks of the <a href="http://www.apache.org/" title="Apache Software Foundation" target="_blank">Apache Software Foundation.</a><br>
+				<a href="/agreements/privacy-policy/" title="Privacy Policy">Privacy Policy</a> |
+				<a href="/agreements/terms-of-service/" title="Terms of Service">Terms of Service</a>
+			</p>
+		</div>
+	</div>
+</section>
+</div>
+
+<div id="options_panel" style="top:320px; right:-169px; width:375px;display: none;">
+	<ul>
+ 		<li>
+ 		    <a href="/marketo-contact-sales/?view-mode=compact" class="contact-us-launch fancybox.iframe" >Contact us <i class="fa fa-pencil-square-o"></i></a>
+		</li>
+	</ul>
+</div>
+
+
+<script type="text/javascript">var mktoEE = {"56de64c8e6460":true,"56de64c9256e1":true,"56de64c926785":true};</script>		<div id="HMUCG_Modal_Container_Wrap">
+			<div id="HMUCG_Modal_Container"><div class="loading"></div></div>
+		</div>
+		<script language="javascript" type="text/javascript">var sfjq$ = jQuery.noConflict(), $ = jQuery.noConflict();</script><script type='text/javascript' src='http://hortonworks.com/wp-content/plugins/bbpress/templates/default/js/editor.js?ver=2.5.8-5815'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var code_prettify_settings = {"base_url":"http:\/\/hortonworks.com\/wp-content\/plugins\/code-prettify\/prettify"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://hortonworks.com/wp-content/plugins/code-prettify/prettify/run_prettify.js?ver=1.3.3'></script>
+<script type='text/javascript' src='http://hortonworks.com/wp-includes/js/jquery/ui/core.min.js?ver=1.11.4'></script>
+<script type='text/javascript' src='http://hortonworks.com/wp-includes/js/jquery/ui/widget.min.js?ver=1.11.4'></script>
+<script type='text/javascript' src='http://hortonworks.com/wp-includes/js/jquery/ui/mouse.min.js?ver=1.11.4'></script>
+<script type='text/javascript' src='http://hortonworks.com/wp-includes/js/jquery/ui/resizable.min.js?ver=1.11.4'></script>
+<script type='text/javascript' src='http://hortonworks.com/wp-includes/js/jquery/ui/draggable.min.js?ver=1.11.4'></script>
+<script type='text/javascript' src='http://hortonworks.com/wp-includes/js/jquery/ui/button.min.js?ver=1.11.4'></script>
+<script type='text/javascript' src='http://hortonworks.com/wp-includes/js/jquery/ui/position.min.js?ver=1.11.4'></script>
+<script type='text/javascript' src='http://hortonworks.com/wp-includes/js/jquery/ui/dialog.min.js?ver=1.11.4'></script>
+<script type='text/javascript' src='http://hortonworks.com/wp-content/themes/hortonworks/js/plugins.js?ver=1430165035'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var HWXHelper = {"ajaxurl":"http:\/\/hortonworks.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://hortonworks.com/wp-content/themes/hortonworks/js/scripts.js?ver=1452643597'></script>
+<script type='text/javascript' src='http://hortonworks.com/wp-content/themes/hortonworks/js/libs/smartforms.js?ver=1452643597'></script>
+<script type='text/javascript' src='http://hortonworks.com/wp-content/themes/hortonworks/js/libs/reachforce.js?ver=1438015050'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var HMUCG = {"nonce":"607c7944e0","optin":"no_optin"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://hortonworks.com/wp-content/plugins/hortonworks-marketo-unified/content_gate/includes/content-gate.js?ver=1452643594'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var HMUUD = {"version":"1449801691","groups":{"default":{"title":"Please tell us a little about yourself : ","blurb":"Registration is required for this content. ","tiers":[["firstName","lastName","email","phone","company","leadRole"]]},"webinar":{"title":"Webinar Registration","blurb":"Please register to view this webinar","tiers":[["firstName","lastName","company","email","phone","title"]]},"dev":{"title":"Questions for HDP Users.","blurb":"We\\\\\\'d love to know how you are using HDP","tiers":[["firstName","lastName","email","Lead_Comment__c"],["company","mainPhone","leadRole"]]},"lite":{"title":"","blurb":"","tiers":[{"1":"firstName","2":"lastName","3":"email","4":"company"}]},"register":{"title":"Registration Required","blurb":"Please register to get access to this content.","tiers":[{"1":"firstName","2":"lastName","3":"email","4":"phone","5":"title","6":"company"}]},"sandbox":{"title":"Register your Sandbox","blurb":"Hortonworks Sandbox is the best way to learn and try HDP. Please register and agree to the terms of service. ","tiers":[["firstName","lastName","email","phone","company","leadRole","I_Accept_The_Terms_and_Conditions__c","Request_Sales_Call__c"],["I_Accept_The_Terms_and_Conditions__c","Request_Sales_Call__c"]]},"hdf":{"title":"Register your Hortonworks DataFlow","blurb":"Hortonworks DataFlow is the best way to learn and try HDF. Please register and agree to the terms of service. ","tiers":[["firstName","lastName","email","phone","company","leadRole","I_Accept_The_Terms_and_Conditions__c","Request_Sales_Call__c"],["I_Accept_The_Terms_and_Conditions__c","Request_Sales_Call__c"]]}}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://hortonworks.com/wp-content/plugins/hortonworks-marketo-unified/user_data/includes/user-data.js?ver=1432690961'></script>
+<script type='text/javascript' src='http://hortonworks.com/wp-includes/js/wp-embed.min.js?ver=4.4.2'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var obj_localize = {"submitSuccess":"Thank You for providing your information","themePath":"http:\/\/hortonworks.com\/wp-content\/plugins\/intercept-gate\/formProcessing.php"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://hortonworks.com/wp-content/plugins/intercept-gate/js/link_update.js?ver=4.4.2'></script>
+<script type='text/javascript' src='//app-sjqe.marketo.com/js/forms2/js/forms2.js?ver=1.0.0'></script>
+<script type='text/javascript' src='http://hortonworks.com/wp-content/plugins/hortonworks-marketo-unified/form_embed/includes/form-embed.js?ver=1452643594'></script>
+
+<!-- Might not validate, but it does work -->
+<link rel='stylesheet' id='override'  href='/wp-content/themes/hortonworks/css/override.css' type='text/css' media='all' />
+
+<div style="display:none;">
+	</div>
+
+<!-- Just in case Marketo Munchkin didn't load right, lets check for it and load again here if it didn't -->
+<script type="text/javascript">
+	if ( typeof mktoMunchkin != 'function' || typeof mktoMunchkinFunction != 'function' ) {
+		document.write(unescape("%3Cscript src='//munchkin.marketo.net/munchkin-beta.js' type='text/javascript'%3E%3C/script%3E"));
+	}
+</script>
+
+<!-- Marketo Analytics : Must Load Before Marketo -->
+<script>mktoMunchkin("549-QAL-086");</script>
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+	_gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+	_gaq.push(['_setAccount', 'UA-22950817-1']);
+	_gaq.push(['_setDomainName', '.hortonworks.com']);
+	_gaq.push(['_trackPageview']);
+	/*
+			// SetCustomeVar's allow us to group pages in GA.
+			_gaq.push(['_setCustomVar',
+			1,                  // This custom var is set to slot #1.  Required parameter.
+			'Section',          // The top-level name for your online content categories.  Required parameter.
+			'High level sell',  // Sets the value of "Section" to "Life & Style" for this particular aricle.  Required parameter.
+			3                   // Sets the scope to page-level.  Optional parameter.
+			]);
+
+			// This would allow us to assign categories to each page.
+			 _gaq.push(['_setCustomVar', 2, 'Category',  'Hive',  3   ]);
+	*/
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+</script>
+
+<!-- Non essential, tracking, cookieing stuff below here -->
+
+<!-- Insightera Scripts :  RTP tag -->
+<script type='text/javascript'>
+    (function(c,h,a,f,i){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        c[a].a=i;var g=h.createElement("script");g.async=true;g.type="text/javascript";
+        g.src=f+'?rh='+c.location.hostname+'&aid='+i;var b=h.getElementsByTagName("script")[0];b.parentNode.insertBefore(g,b);
+    })(window,document,"rtp","//rtp-cloud2.marketo.com/rtp-api/v1/rtp.js","hortonworks");
+
+    rtp('send','view');
+    rtp('get', 'campaign',true);
+</script>
+<!-- End of RTP tag -->
+
+<!-- Bizo Retargetting : Lauren -->
+<script type="text/javascript">
+	_bizo_data_partner_id = "6008";
+	(function() {
+		var s = document.getElementsByTagName("script")[0];
+		var b = document.createElement("script");
+		b.type = "text/javascript";
+		b.async = true;
+		b.src = (window.location.protocol === "https:" ? "https://sjs" : "http://js") + ".bizographics.com/insight.min.js";
+		s.parentNode.insertBefore(b, s);
+	})();
+</script>
+<noscript>
+		<img height="1" width="1" alt="" style="display:none;" src="//www.bizographics.com/collect/?pid=6008&amp;fmt=gif" />
+</noscript>
+
+
+<!-- Smartling Language Detector -->
+<script type="text/javascript">
+	var smtId = "1b5fd90c4";
+	var smtDefaultStyles = false; /* set to false to use your own css */
+	var smtRedirect = true;
+	var smtProt = (("https:" == document.location.protocol) ? "https://" : "http://");
+	document.write(unescape("%3Cscript src='" + smtProt + "cdn01.smartling.com/ls/" + smtId + ".js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<!-- Pingdom RUM -->
+<script>
+	var _prum = [['id', '544ef94fabe53db12aa05f65'],
+		['mark', 'firstbyte', (new Date()).getTime()]];
+	(function() {
+		var s = document.getElementsByTagName('script')[0]
+			, p = document.createElement('script');
+		p.async = 'async';
+		p.src = '//rum-static.pingdom.net/prum.min.js';
+		s.parentNode.insertBefore(p, s);
+	})();
+</script>
+
+<!-- Facebook Retargetting - Added for Masha Nov 12, 2014 -->
+<script>(function() {
+		var _fbq = window._fbq || (window._fbq = []);
+		if (!_fbq.loaded) {
+			var fbds = document.createElement('script');
+			fbds.async = true;
+			fbds.src = '//connect.facebook.net/en_US/fbds.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(fbds, s);
+			_fbq.loaded = true;
+		}
+		_fbq.push(['addPixelId', '828241047198292']);
+	})();
+	window._fbq = window._fbq || [];
+	window._fbq.push(['track', 'PixelInitialized', {}]);
+</script>
+<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=828241047198292&amp;ev=PixelInitialized" /></noscript>
+
+<!-- ToutApp -->
+<script type="text/javascript">(function() {var t = document.createElement('script'); t.type = 'text/javascript'; t.async = true;var u = document.location.href;var ti = document.title;var i = "?title=" + encodeURIComponent(ti) + "&url=" + encodeURIComponent(u);t.src =  'https://go.toutapp.com/site/adha5s3n5v' + i;var st = document.getElementsByTagName('script')[0];st.parentNode.insertBefore(t, st);})();</script>​
+
+<!-- Optimizely -->
+<script src="//cdn.optimizely.com/js/2886531796.js"></script>
+
+<!--
+// Load our overrides.css in a validation friendly way
+// Nice idea, but GF styles were still being loaded in the footer in the non-validating way.
+
+<script>
+	var cb = function() {
+		var l = document.createElement('link'); l.rel = 'stylesheet';
+		l.href = 'http://hortonworks.com/wp-content/themes/hortonworks/css/override.css';
+		var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
+	};
+	var raf = requestAnimationFrame || mozRequestAnimationFrame || webkitRequestAnimationFrame || msRequestAnimationFrame;
+	if (raf) raf(cb);
+	else window.addEventListener('load', cb);
+</script>
+-->
+<link rel='stylesheet' id='gforms_overridess'  href='/wp-content/themes/hortonworks/css/override.css' type='text/css' media='all' />
+
+
+<script>
+ $('.newsletter_signup input[type="submit"]').addClass('btn loud');
+</script>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51eefdcb485124d8"></script>
