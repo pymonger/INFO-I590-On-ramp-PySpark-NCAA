@@ -13,6 +13,6 @@ The data that will be used in this assignment comes from https://www.spreadsheet
 ## Instructions
 1. Install VirtualBox (https://www.virtualbox.org/wiki/Downloads).
 2. Download the Hortonworks Sandbox (http://hortonworks.com/products/hortonworks-sandbox/#install). If you do not want to register, I've uploaded the VM to my IU google drive ().
-3. Import the VM according to the instructions here (http://hortonworks.com/wp-content/uploads/2016/02/Import_on_Vbox_3_1_2016.pdf). Information such as installed software, account login information, etc. are contained in the release notes (http://hortonworks.com/wp-content/uploads/2016/03/ReleaseNotes_3_3_2016.pdf).
-4. Once the instance is up and running, go through the "Hands-on Tour of Apache Spark in 5 Minutes" tutorial (http://hortonworks.com/hadoop-tutorial/hands-on-tour-of-apache-spark-in-5-minutes/) to quickly familiarize yourself with Zeppelin notebooks (similar to ipython/jupyter notebook in the first on-ramp) and Spark using PySpark (python binding to the Spark programming model).
+3. Import the VM according to the instructions in `Import_on_Vbox_3_1_2016.pdf`. Information such as installed software, account login information, etc. are contained in the release notes `ReleaseNotes_3_3_2016.pdf`.
+4. Once the instance is up and running, go through the "Hands-on Tour of Apache Spark in 5 Minutes" tutorial, `Spark_Tutorial.pdf` to quickly familiarize yourself with Zeppelin notebooks (similar to ipython/jupyter notebook in the first on-ramp) and Spark using PySpark (python binding to the Spark programming model).
 5. Finally, load the Zeppelin notebook contained in this repo and complete the assignment.
